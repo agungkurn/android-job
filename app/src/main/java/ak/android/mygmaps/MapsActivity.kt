@@ -60,34 +60,34 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            Log.d(
-                TAG,
-                "Lat: ${it.latitude}. Long: ${it.longitude}"
-            )
+        fusedLocationProviderClient.lastLocation
+			.addOnSuccessListener {
+            	Log.d(
+                	TAG,
+                	"Lat: ${it.latitude}. Long: ${it.longitude}"
+            	)
 
-            // Move camera on user's last known location
-            googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
-            )
+            	// Move camera on user's last known location
+            	googleMap.moveCamera(
+                	CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
+            	)
 
-            // Clear anything when the camera is being moved
-            googleMap.setOnCameraMoveListener {
-                googleMap.clear()
+            	// Clear anything when the camera is being moved
+            	googleMap.setOnCameraMoveListener {
+                	googleMap.clear()
+            	}
+
+            	// Add marker at the center of current camera position
+            	// and generate 10 blue dots around it
+            	googleMap.setOnCameraIdleListener {
+                	val center = googleMap.cameraPosition.target
+                	showCurrentLocation(center, googleMap)
+                	showBlueDots(center, googleMap)
             }
-
-            // Add marker at the center of current camera position
-            // and generate 10 blue dots around it
-            googleMap.setOnCameraIdleListener {
-                val center = googleMap.cameraPosition.target
-                showCurrentLocation(center, googleMap)
-                showBlueDots(center, googleMap)
-            }
-
-        }.addOnFailureListener {
-            Toast.makeText(applicationContext, "Error: ${it.localizedMessage}", Toast.LENGTH_SHORT)
-                .show()
-        }
+        	}.addOnFailureListener {
+            	Toast.makeText(applicationContext, "Error: ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                	.show()
+        	}
     }
 
     private fun showCurrentLocation(latLong: LatLng, map: GoogleMap) {
