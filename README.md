@@ -1,1 +1,1 @@
-<img src="screenshots/main.jpg" height=800/>
+<img src="screenshots/main.jpg" height=600/>
